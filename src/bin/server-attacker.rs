@@ -8,6 +8,10 @@ use tokio::io::{AsyncReadExt, AsyncWriteExt};
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
+    // ip: the server ip
+    #[arg(short, long)]
+    ip: String,
+
     // port: the port where own server will be running
     #[arg(short, long)]
     port: u16,
@@ -41,7 +45,7 @@ async fn main() {
     let args = Args::parse();
 
     // parse the direcction addrs
-    let addr = format!("127.0.0.1:{}", args.port);
+    let addr = format!("{}:{}", args.ip, args.port);
 
     // arc of args.command
     let command_arc = Arc::new(args.command);
