@@ -8,6 +8,10 @@ use tokio::io::{AsyncReadExt, AsyncWriteExt};
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
+    // ip: the server ip
+    #[arg(short, long)]
+    ip: String,
+
     // port: the port where own server will be running
     #[arg(short, long)]
     port: u16,
@@ -28,11 +32,20 @@ async fn handler_connection(mut socket: TcpStream, addr: SocketAddr, command: St
         };
 
         // reading the info of the bots
-        let n = socket.read(&mut buffer).await.unwrap();
-        let data = String::from_utf8_lossy(&buffer[..n]);
+        match socket.read(&mut buffer).await {
+            Ok(n) if n == 0 => continue,
+            Ok(n) => {
+                let data = String::from_utf8_lossy(&buffer[..n]);
+                
+                // print the data
+                println!("[MESSAGE] [{}] => {}", addr, data);
+            }
+            Err(e) => {
+                eprintln!("{:?}", e);
+            }
+        }
+        
 
-        // print the data
-        println!("[MESSAGE] [{}] => {}", addr, data);
     }
 }
 #[tokio::main]
@@ -41,7 +54,7 @@ async fn main() {
     let args = Args::parse();
 
     // parse the direcction addrs
-    let addr = format!("127.0.0.1:{}", args.port);
+    let addr = format!("{}:{}", args.ip, args.port);
 
     // arc of args.command
     let command_arc = Arc::new(args.command);
