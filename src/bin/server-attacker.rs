@@ -32,11 +32,20 @@ async fn handler_connection(mut socket: TcpStream, addr: SocketAddr, command: St
         };
 
         // reading the info of the bots
-        let n = socket.read(&mut buffer).await.unwrap();
-        let data = String::from_utf8_lossy(&buffer[..n]);
+        match socket.read(&mut buffer).await {
+            Ok(n) if n == 0 => continue,
+            Ok(n) => {
+                let data = String::from_utf8_lossy(&buffer[..n]);
+                
+                // print the data
+                println!("[MESSAGE] [{}] => {}", addr, data);
+            }
+            Err(e) => {
+                eprintln!("{:?}", e);
+            }
+        }
+        
 
-        // print the data
-        println!("[MESSAGE] [{}] => {}", addr, data);
     }
 }
 #[tokio::main]
