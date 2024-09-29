@@ -83,13 +83,11 @@ async fn handler_order(mut socket: TcpStream) {
 
         let command_data = String::from_utf8_lossy(&buffer_command[..n]);
 
-        println!("elpepe: {command_data}");
-
+        println!("command: {command_data}");
 
         // parsing the command into the main command and its arguments
         let (command, args) = command_parser(&command_data);
 
-        println!("{}", command.trim());
         // executing the command
         let output_command = Command::new(command.trim())
             .args(args)

@@ -20,7 +20,7 @@ struct Args {
     command: String,
 
     // times to repet the command
-    #[arg(short, long)]
+    #[arg(short, long, default_value = "1")]
     times: String,
 }
 
