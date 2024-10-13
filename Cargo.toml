@@ -1,9 +1,9 @@
-[package]
-name = "attack-ddos-290"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-tokio ={ version = "1", features = ["full"]}
-clap = { version = "4.2", features = ["derive"] }
-signal-hook = "0.3"
+[workspace]
+resolver = "2"
+members = [
+    "bin/client",
+    "bin/controller",
+    "bin/server",
+    "libs/request",
+    "libs/request_transfer",
+]
