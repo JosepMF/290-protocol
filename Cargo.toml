@@ -2,7 +2,7 @@
 members = [
     "bin/bot-client",
     "bin/controller",
-    "bin/server",
+    "bin/server", "libs/request",
 ]
 
 workspace.resolver = "2"
@@ -10,3 +10,5 @@ workspace.resolver = "2"
 [workspace.dependencies]
 tokio = { version = "1", features = ["full"]}
 signal-hook = "0.3"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
