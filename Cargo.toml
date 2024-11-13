@@ -1,9 +1,12 @@
-[package]
-name = "attack-ddos-290"
-version = "0.1.0"
-edition = "2021"
+[workspace]
+members = [
+    "bin/bot-client",
+    "bin/controller",
+    "bin/server",
+]
 
-[dependencies]
-tokio ={ version = "1", features = ["full"]}
-clap = { version = "4.2", features = ["derive"] }
+workspace.resolver = "2"
+
+[workspace.dependencies]
+tokio = { version = "1", features = ["full"]}
 signal-hook = "0.3"
